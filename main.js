@@ -384,6 +384,7 @@
             document.body.style.backgroundRepeat = "no-repeat";
             document.body.style.backgroundColor = "transparent";
             document.body.style.backgroundAttachment = "fixed";
+            document.body.style.backgroundPointerEvents = "none";
             localStorage.setItem(BG_KEY, imageUrl);
         }
         
