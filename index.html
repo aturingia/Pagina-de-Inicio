@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-	<link rel="shorcut icon" size="16x16 24x24 32x32 48x48" href="favicon.ico" type="image/x-icon">
-    <title>Inicio · Nexus Dashboard</title>
-    <!-- Fuente moderna: Inter + sistema -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 (gratuito) para iconos auxiliares -->
+    <link rel="shorcut icon" size="16x16 24x24 32x32 48x48" href="favicon.ico" type="image/x-icon">
+    <title>Nexus Dashboard · Página de inicio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -26,37 +23,34 @@
         </div>
     </div>
 
-    <!-- Panel personalización oculto por defecto pero visible con botón, también persistencia de estado -->
     <div id="customizePanel" style="display: none;">
         <div class="customize-panel">
             <div class="color-row">
-                <label><i class="fas fa-font"></i> Color texto:</label>
+                <label for="fontColorPicker"><i class="fas fa-font"></i> Color texto:</label>
                 <input type="color" id="fontColorPicker" value="#f0f3fa">
-                <button class="ctrl-btn" id="applyFontColor" style="background:#3a3a5a;">Aplicar</button>
+                <button class="ctrl-btn" id="applyFontColor" style="background:#3a3a5e;">Aplicar</button>
             </div>
             <div class="bg-row">
-                <label><i class="fas fa-image"></i> Fondo URL:</label>
-                <input type="text" id="bgUrlInput" placeholder="https://...jpg o .png" class="bg-url-input">
+                <label for="bgUrlInput"><i class="fas fa-image"></i> Fondo URL:</label>
+                <input type="text" id="bgUrlInput" placeholder="https://...jpg .png .webp" class="bg-url-input">
                 <button class="ctrl-btn" id="setBgUrlBtn">Cargar URL</button>
-                <label class="file-label" for="bgFileInput"><i class="fas fa-upload"></i> Imagen local</label>
+                <label for="bgFileInput" class="file-label"><i class="fas fa-upload"></i> Imagen local</label>
                 <input type="file" id="bgFileInput" accept="image/*" style="display: none;">
                 <button class="ctrl-btn" id="resetBgBtn">Fondo por defecto</button>
             </div>
         </div>
     </div>
 
-    <!-- Ordenable grid de accesos directos -->
     <div id="shortcutsContainer" class="shortcuts-grid"></div>
 
-    <!-- formulario para nuevo acceso -->
     <div class="add-form">
-        <input type="text" id="newShortcutTitle" placeholder="Nombre (ej. GitHub)" autocomplete="off">
-        <input type="url" id="newShortcutUrl" placeholder="https:// o http:// ...">
+        <input type="text" id="newShortcutTitle" placeholder="Nombre (Ej: Youtube)" autocomplete="off">
+        <input type="text" id="newShortcutUrl" placeholder="https:// o dominio.com" autocomplete="off">
         <button id="addShortcutBtn"><i class="fas fa-plus"></i> Añadir acceso</button>
     </div>
-    <p style="font-size: 0.7rem; text-align: center; margin-top: 1.5rem; opacity: 0.7;">Arrastra los accesos para reordenar</p>
+    <p style="font-size: 0.7rem; text-align: center; margin-top: 1.2rem; opacity: 0.7;">🖱️ Arrastra para reordenar · El ícono es el favicon real del sitio web</p>
 </div>
+<div id="toastMsg" class="toast-msg"></div>
 <script src="main.js"></script>
-
 </body>
 </html>

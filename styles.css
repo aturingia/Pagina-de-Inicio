@@ -1,45 +1,39 @@
- * {
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #1e1f2c;
             color: #f0f3fa;
             min-height: 100vh;
-            transition: background-image 0.3s ease, background-color 0.2s;
+            transition: background-image 0.2s ease, background-color 0.2s, color 0.1s;
             background-size: cover;
-            background-position: center;
-            /*background-attachment: fixed;*/
+            background-position: center center;
+            background-attachment: fixed;
         }
 
-        /* overlay para mejorar legibilidad si fondo es claro/oscuro */
         body::before {
             content: '';
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.3);
             pointer-events: none;
             z-index: -1;
-            transition: background-color 0.2s;
-            background-repeat: no-repeat;
         }
 
-        /* container principal */
         .dashboard {
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem 2rem 3rem;
         }
 
-        /* header: hora, temperatura + botones de personalización */
         .top-bar {
             display: flex;
             flex-wrap: wrap;
@@ -48,10 +42,10 @@
             gap: 1.2rem;
             margin-bottom: 2.5rem;
             backdrop-filter: blur(12px);
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.35);
             border-radius: 2.2rem;
             padding: 0.9rem 1.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .datetime-temp {
@@ -62,17 +56,18 @@
         }
 
         .clock {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 600;
             letter-spacing: 1px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.45);
             padding: 0.2rem 1rem;
             border-radius: 2rem;
             font-feature-settings: 'tnum';
+            font-variant-numeric: tabular-nums;
         }
 
         .weather {
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.45);
             padding: 0.2rem 1rem;
             border-radius: 2rem;
             display: inline-flex;
@@ -82,10 +77,6 @@
             font-size: 1.2rem;
         }
 
-        .weather i {
-            font-size: 1.3rem;
-        }
-
         .custom-controls {
             display: flex;
             gap: 0.8rem;
@@ -93,11 +84,11 @@
         }
 
         .ctrl-btn {
-            background: rgba(20, 20, 35, 0.7);
+            background: rgba(30, 30, 50, 0.8);
             backdrop-filter: blur(4px);
             border: none;
             color: white;
-            font-size: 1rem;
+            font-size: 0.9rem;
             padding: 0.5rem 1rem;
             border-radius: 2rem;
             cursor: pointer;
@@ -107,17 +98,16 @@
             align-items: center;
             gap: 8px;
             font-family: inherit;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .ctrl-btn:hover {
-            background: rgba(80, 80, 120, 0.8);
+            background: rgba(80, 80, 120, 0.9);
             transform: scale(0.97);
         }
 
-        /* panel de personalización flotante */
         .customize-panel {
-            background: rgba(25, 25, 40, 0.95);
+            background: rgba(25, 25, 45, 0.96);
             backdrop-filter: blur(16px);
             border-radius: 2rem;
             padding: 1.2rem 1.5rem;
@@ -127,8 +117,7 @@
             gap: 1.5rem;
             align-items: center;
             justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.25);
         }
 
         .color-row, .bg-row {
@@ -141,44 +130,50 @@
         .color-row label, .bg-row label {
             font-size: 0.85rem;
             font-weight: 500;
-            background: rgba(0,0,0,0.5);
-            padding: 0.3rem 0.8rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.3rem 0.9rem;
             border-radius: 2rem;
+            cursor: pointer;
         }
 
         input[type="color"] {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border: 2px solid white;
             border-radius: 50%;
             cursor: pointer;
             background: transparent;
             padding: 0;
-        }
-
-        input, button, .file-label {
-            font-family: inherit;
+            box-shadow: 0 0 4px rgba(0,0,0,0.3);
         }
 
         .bg-url-input {
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 0.4rem 0.8rem;
             border-radius: 2rem;
             color: white;
-            width: 220px;
+            width: 230px;
             font-size: 0.8rem;
+            font-family: monospace;
         }
 
         .file-label {
-            background: #3a3a5a;
+            background: #3a3a5e;
             padding: 0.4rem 1rem;
             border-radius: 2rem;
             cursor: pointer;
             font-size: 0.8rem;
+            transition: 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* grid de accesos directos */
+        .file-label:hover {
+            background: #4a4a6e;
+        }
+
         .shortcuts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 180px));
@@ -189,7 +184,7 @@
         }
 
         .shortcut-card {
-            background: rgba(20, 20, 35, 0.65);
+            background: rgba(20, 20, 38, 0.75);
             backdrop-filter: blur(10px);
             border-radius: 1.8rem;
             padding: 1rem 0.6rem;
@@ -197,10 +192,11 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: transform 0.1s, background 0.2s;
             cursor: grab;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            user-select: none;
         }
 
         .shortcut-card:active {
@@ -213,25 +209,26 @@
         }
 
         .favicon-img {
-            width: 48px;
-            height: 48px;
+            width: 54px;
+            height: 54px;
             object-fit: contain;
             margin-bottom: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
             padding: 6px;
+            transition: 0.1s;
         }
 
         .shortcut-title {
             font-weight: 600;
             font-size: 0.9rem;
             word-break: break-word;
-            margin: 5px 0;
+            margin: 5px 0 2px;
         }
 
         .shortcut-url {
             font-size: 0.7rem;
-            opacity: 0.7;
+            opacity: 0.75;
             width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -240,9 +237,9 @@
 
         .card-actions {
             display: flex;
-            gap: 12px;
-            margin-top: 8px;
-            opacity: 0.7;
+            gap: 14px;
+            margin-top: 10px;
+            opacity: 0.75;
         }
 
         .card-actions i {
@@ -256,9 +253,8 @@
             transform: scale(1.1);
         }
 
-        /* formulario agregar acceso */
         .add-form {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(12px);
             border-radius: 2rem;
             padding: 1rem 1.5rem;
@@ -268,18 +264,23 @@
             justify-content: space-between;
             gap: 1rem;
             margin-top: 1rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .add-form input {
-            background: rgba(20,20,35,0.7);
-            border: 1px solid #aaa;
-            padding: 0.7rem 1rem;
+            background: rgba(20, 20, 40, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 0.7rem 1.2rem;
             border-radius: 2.5rem;
             color: white;
             flex: 1;
-            min-width: 160px;
+            min-width: 150px;
             font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .add-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .add-form button {
@@ -291,41 +292,45 @@
             cursor: pointer;
             color: white;
             transition: 0.2s;
+            font-family: inherit;
         }
 
-        .reset-btn {
-            background: #e74c3c;
+        .add-form button:hover {
+            background: #5b4bc4;
+            transform: scale(0.98);
         }
 
-        /* responsive */
         @media (max-width: 640px) {
-            .dashboard {
-                padding: 1rem;
-            }
-            .shortcuts-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 0.8rem;
-            }
-            .clock {
-                font-size: 1.5rem;
-            }
-            .weather {
-                font-size: 1rem;
-            }
-            .top-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .custom-controls {
-                justify-content: center;
-            }
+            .dashboard { padding: 1rem; }
+            .shortcuts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; }
+            .clock { font-size: 1.5rem; }
+            .weather { font-size: 0.95rem; }
+            .top-bar { flex-direction: column; align-items: stretch; }
+            .custom-controls { justify-content: center; }
+            .bg-url-input { width: 160px; }
+            .favicon-img { width: 46px; height: 46px; }
         }
 
-        /* botón flotante simple para mostrar/ocultar personalización */
-        .toggle-customize {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
             color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-weight: 500;
+        }
+
+        /* Accesibilidad: mejorar foco */
+        input:focus, button:focus, .ctrl-btn:focus {
+            outline: 2px solid #6c5ce7;
+            outline-offset: 2px;
         }
