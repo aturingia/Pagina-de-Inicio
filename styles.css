@@ -27,6 +27,7 @@
             pointer-events: none;
             z-index: -1;
             transition: background-color 0.2s;
+            background-repeat: no-repeat;
         }
 
         /* container principal */
