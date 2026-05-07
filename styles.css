@@ -12,7 +12,7 @@
             transition: background-image 0.3s ease, background-color 0.2s;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            /*background-attachment: fixed;*/
         }
 
         /* overlay para mejorar legibilidad si fondo es claro/oscuro */
