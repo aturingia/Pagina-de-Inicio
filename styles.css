@@ -1,0 +1,328 @@
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #1e1f2c;
+            color: #f0f3fa;
+            min-height: 100vh;
+            transition: background-image 0.3s ease, background-color 0.2s;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+
+        /* overlay para mejorar legibilidad si fondo es claro/oscuro */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: -1;
+            transition: background-color 0.2s;
+        }
+
+        /* container principal */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 3rem;
+        }
+
+        /* header: hora, temperatura + botones de personalización */
+        .top-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 2.2rem;
+            padding: 0.9rem 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .datetime-temp {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+
+        .clock {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            font-feature-settings: 'tnum';
+        }
+
+        .weather {
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        .weather i {
+            font-size: 1.3rem;
+        }
+
+        .custom-controls {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .ctrl-btn {
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(4px);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(80, 80, 120, 0.8);
+            transform: scale(0.97);
+        }
+
+        /* panel de personalización flotante */
+        .customize-panel {
+            background: rgba(25, 25, 40, 0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.2s;
+        }
+
+        .color-row, .bg-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .color-row label, .bg-row label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: rgba(0,0,0,0.5);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+        }
+
+        input[type="color"] {
+            width: 38px;
+            height: 38px;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+
+        input, button, .file-label {
+            font-family: inherit;
+        }
+
+        .bg-url-input {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            color: white;
+            width: 220px;
+            font-size: 0.8rem;
+        }
+
+        .file-label {
+            background: #3a3a5a;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* grid de accesos directos */
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 180px));
+            gap: 1.2rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .shortcut-card {
+            background: rgba(20, 20, 35, 0.65);
+            backdrop-filter: blur(10px);
+            border-radius: 1.8rem;
+            padding: 1rem 0.6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: grab;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .shortcut-card:active {
+            cursor: grabbing;
+        }
+
+        .shortcut-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .favicon-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 6px;
+        }
+
+        .shortcut-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            word-break: break-word;
+            margin: 5px 0;
+        }
+
+        .shortcut-url {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
+        .card-actions i {
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.1s;
+        }
+
+        .card-actions i:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* formulario agregar acceso */
+        .add-form {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .add-form input {
+            background: rgba(20,20,35,0.7);
+            border: 1px solid #aaa;
+            padding: 0.7rem 1rem;
+            border-radius: 2.5rem;
+            color: white;
+            flex: 1;
+            min-width: 160px;
+            font-size: 0.9rem;
+        }
+
+        .add-form button {
+            background: #6c5ce7;
+            border: none;
+            padding: 0.7rem 1.4rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .reset-btn {
+            background: #e74c3c;
+        }
+
+        /* responsive */
+        @media (max-width: 640px) {
+            .dashboard {
+                padding: 1rem;
+            }
+            .shortcuts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 0.8rem;
+            }
+            .clock {
+                font-size: 1.5rem;
+            }
+            .weather {
+                font-size: 1rem;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .custom-controls {
+                justify-content: center;
+            }
+        }
+
+        /* botón flotante simple para mostrar/ocultar personalización */
+        .toggle-customize {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: white;
+        }
