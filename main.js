@@ -381,6 +381,7 @@
             document.body.style.backgroundImage = `url("${imageUrl.replace(/"/g, '&quot;')}")`;
             document.body.style.backgroundSize = "cover";
             document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundRepeat = "no-repeat";
             document.body.style.backgroundColor = "transparent";
             localStorage.setItem(BG_KEY, imageUrl);
         }
