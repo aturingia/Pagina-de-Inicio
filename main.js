@@ -383,6 +383,7 @@
             document.body.style.backgroundPosition = "center";
             document.body.style.backgroundRepeat = "no-repeat";
             document.body.style.backgroundColor = "transparent";
+            document.body.style.backgroundAttachment = "fixed";
             localStorage.setItem(BG_KEY, imageUrl);
         }
         
