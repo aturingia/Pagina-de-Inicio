@@ -12,8 +12,8 @@
             min-height: 100vh;
             transition: background-image 0.2s ease, background-color 0.2s, color 0.1s;
             /*background-size: cover;
-            background-position: center center;
-            background-attachment: fixed;*/
+            background-position: center center;*/
+            background-attachment: fixed;
             position: relative;
         }
 /* Fondo estático */
