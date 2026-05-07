@@ -274,6 +274,7 @@
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
         document.body.style.backgroundColor = "transparent";
+        document.body.style.backgroundRepeat = "no-repeat";
         localStorage.setItem(BG_KEY, imageUrl);
     }
 
