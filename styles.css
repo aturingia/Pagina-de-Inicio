@@ -1,58 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
- * {
+* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ========== FONDO TOTALMENTE FIJO (PARALLAX PROFESIONAL) ========== */
-        /* Se crea un pseudo-elemento fijo independiente del contenido */
         body {
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #1e1f2c;
             color: #f0f3fa;
             min-height: 100vh;
-            /* El body NO tiene fondo directo, para que el pseudo-elemento fijo funcione */
-            background: transparent;
-            position: relative;
-        }
-
-        /* Elemento de fondo fijo que permanece estático durante el scroll */
-        .fixed-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
+            transition: background-image 0.2s ease, background-color 0.2s, color 0.1s;
             background-size: cover;
             background-position: center center;
-            background-repeat: no-repeat;
-            transition: background-image 0.3s ease;
-            /* Color base de respaldo (oscuro) mientras carga o si no hay imagen */
-            background-color: #1e1f2c;
+            background-attachment: fixed;
+            position: relative;
         }
 
-        /* Capa de oscurecimiento superpuesta para mejorar legibilidad (también fija) */
-        .overlay-bg {
+        /* Overlay para mejorar legibilidad con fondos claros */
+        body.has-bg::after {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.35);
+            background-color: rgba(0, 0, 0, 0.4);
             pointer-events: none;
             z-index: -1;
-            transition: background-color 0.2s;
         }
 
-        /* El contenido principal scroll normalmente, el fondo se queda quieto */
         .dashboard {
-            position: relative;
-            z-index: 1;
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem 2rem 3rem;
+            position: relative;
+            z-index: 1;
         }
 
         .top-bar {
@@ -154,6 +138,9 @@
             background: rgba(0, 0, 0, 0.6);
             padding: 0.3rem 0.9rem;
             border-radius: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             cursor: pointer;
         }
 
@@ -174,7 +161,7 @@
             padding: 0.4rem 0.8rem;
             border-radius: 2rem;
             color: white;
-            width: 230px;
+            width: 320px;
             font-size: 0.8rem;
             font-family: monospace;
         }
@@ -191,8 +178,12 @@
             gap: 6px;
         }
 
-        .file-label:hover {
-            background: #4a4a6e;
+        .pinterest-hint {
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.5);
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            color: #e60023;
         }
 
         .shortcuts-grid {
@@ -290,7 +281,7 @@
 
         .add-form input {
             background: rgba(20, 20, 40, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255,255,255,0.4);
             padding: 0.7rem 1.2rem;
             border-radius: 2.5rem;
             color: white;
@@ -321,14 +312,14 @@
             transform: scale(0.98);
         }
 
-        @media (min-width: 640px) {
+        @media (max-width: 640px) {
             .dashboard { padding: 1rem; }
             .shortcuts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; }
             .clock { font-size: 1.5rem; }
             .weather { font-size: 0.95rem; }
             .top-bar { flex-direction: column; align-items: stretch; }
             .custom-controls { justify-content: center; }
-            .bg-url-input { width: 160px; }
+            .bg-url-input { width: 190px; }
             .favicon-img { width: 46px; height: 46px; }
         }
 
@@ -349,8 +340,16 @@
             transition: opacity 0.2s;
             font-weight: 500;
         }
-
-        input:focus, button:focus, .ctrl-btn:focus {
+        
+        .ctrl-btn:focus-visible, .add-form button:focus-visible, .file-label:focus-visible, input:focus-visible {
             outline: 2px solid #6c5ce7;
             outline-offset: 2px;
+        }
+        
+        /* Estilos para el preview de fondo */
+        .bg-preview {
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.5);
+            border-radius: 1rem;
+            padding: 0.2rem 0.6rem;
         }
