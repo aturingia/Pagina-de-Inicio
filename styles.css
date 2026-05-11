@@ -18,7 +18,6 @@
             position: relative;
         }
 
-        /* Overlay para mejorar legibilidad con fondos claros */
         body.has-bg::after {
             content: '';
             position: fixed;
@@ -312,6 +311,49 @@
             transform: scale(0.98);
         }
 
+        /* Estilos para la sección de import/export */
+        .import-export-bar {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .import-export-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .file-input-label {
+            background: #00b894;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .file-input-label:hover {
+            background: #00a884;
+            transform: scale(0.98);
+        }
+
+        .import-status {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
         @media (max-width: 640px) {
             .dashboard { padding: 1rem; }
             .shortcuts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.8rem; }
@@ -321,6 +363,8 @@
             .custom-controls { justify-content: center; }
             .bg-url-input { width: 190px; }
             .favicon-img { width: 46px; height: 46px; }
+            .import-export-bar { flex-direction: column; align-items: stretch; }
+            .import-export-buttons { justify-content: center; }
         }
 
         .toast-msg {
@@ -341,12 +385,11 @@
             font-weight: 500;
         }
         
-        .ctrl-btn:focus-visible, .add-form button:focus-visible, .file-label:focus-visible, input:focus-visible {
+        .ctrl-btn:focus-visible, .add-form button:focus-visible, .file-label:focus-visible, .file-input-label:focus-visible, input:focus-visible {
             outline: 2px solid #6c5ce7;
             outline-offset: 2px;
         }
         
-        /* Estilos para el preview de fondo */
         .bg-preview {
             font-size: 0.7rem;
             background: rgba(0,0,0,0.5);

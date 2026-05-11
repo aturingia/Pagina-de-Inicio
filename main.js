@@ -1,4 +1,4 @@
-(function(){
+ (function(){
         // ---------- DATOS ----------
         let shortcuts = [];
         let nextId = 1;
@@ -26,6 +26,12 @@
         const resetDataBtn = document.getElementById("resetDataBtn");
         const toastMsg = document.getElementById("toastMsg");
         const bgPreviewStatus = document.getElementById("bgPreviewStatus");
+        
+        // Nuevos elementos para import/export
+        const exportJsonBtn = document.getElementById("exportJsonBtn");
+        const importJsonFile = document.getElementById("importJsonFile");
+        const mergeJsonBtn = document.getElementById("mergeJsonBtn");
+        const importStatus = document.getElementById("importStatus");
 
         function showToast(msg, duration = 2100) {
             toastMsg.textContent = msg;
@@ -33,12 +39,127 @@
             setTimeout(() => toastMsg.style.opacity = "0", duration);
         }
 
-        // Función mejorada para validar y cargar imágenes de fondo (sin CORS)
+        // ---------- FUNCIONES DE EXPORTAR/IMPORTAR JSON ----------
+        function exportToJSON() {
+            const exportData = {
+                version: "1.0",
+                exportDate: new Date().toISOString(),
+                shortcuts: shortcuts.map(s => ({
+                    id: s.id,
+                    title: s.title,
+                    url: s.url
+                }))
+            };
+            
+            const jsonStr = JSON.stringify(exportData, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `nexus_backup_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast(`✅ Exportados ${shortcuts.length} accesos a JSON`, 2500);
+            if (importStatus) importStatus.innerHTML = `<i class="fas fa-check-circle"></i> Exportado: ${shortcuts.length} accesos`;
+        }
+        
+        function importFromJSON(file, mergeMode = false) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    const data = JSON.parse(content);
+                    
+                    let importedShortcuts = [];
+                    
+                    // Soporte para diferentes formatos de JSON
+                    if (data.shortcuts && Array.isArray(data.shortcuts)) {
+                        importedShortcuts = data.shortcuts;
+                    } else if (Array.isArray(data)) {
+                        importedShortcuts = data;
+                    } else if (data.links && Array.isArray(data.links)) {
+                        importedShortcuts = data.links;
+                    } else {
+                        throw new Error("Formato no reconocido");
+                    }
+                    
+                    if (importedShortcuts.length === 0) {
+                        showToast("❌ El archivo no contiene accesos válidos", 2500);
+                        return;
+                    }
+                    
+                    // Validar y limpiar los datos importados
+                    const validShortcuts = [];
+                    for (const item of importedShortcuts) {
+                        if (item.title && item.url) {
+                            validShortcuts.push({
+                                id: item.id || nextId++,
+                                title: String(item.title).trim(),
+                                url: String(item.url).trim()
+                            });
+                        } else if (item.name && item.link) {
+                            validShortcuts.push({
+                                id: item.id || nextId++,
+                                title: String(item.name).trim(),
+                                url: String(item.link).trim()
+                            });
+                        }
+                    }
+                    
+                    if (validShortcuts.length === 0) {
+                        showToast("❌ No se encontraron accesos válidos en el archivo", 2500);
+                        return;
+                    }
+                    
+                    if (mergeMode) {
+                        // Modo fusión: agregar los nuevos sin duplicados (por URL)
+                        const existingUrls = new Set(shortcuts.map(s => s.url.toLowerCase()));
+                        const newShortcuts = [];
+                        for (const item of validShortcuts) {
+                            if (!existingUrls.has(item.url.toLowerCase())) {
+                                item.id = nextId++;
+                                newShortcuts.push(item);
+                            }
+                        }
+                        shortcuts.push(...newShortcuts);
+                        showToast(`✅ Fusionados ${newShortcuts.length} nuevos accesos (${validShortcuts.length - newShortcuts.length} duplicados ignorados)`, 3000);
+                        if (importStatus) importStatus.innerHTML = `<i class="fas fa-check-circle"></i> Fusionados: +${newShortcuts.length} accesos`;
+                    } else {
+                        // Modo reemplazo: limpiar y cargar nuevos
+                        // Reasignar IDs para evitar conflictos
+                        shortcuts = [];
+                        for (const item of validShortcuts) {
+                            shortcuts.push({
+                                id: nextId++,
+                                title: item.title,
+                                url: item.url
+                            });
+                        }
+                        showToast(`✅ Importados ${shortcuts.length} accesos (reemplazo completo)`, 3000);
+                        if (importStatus) importStatus.innerHTML = `<i class="fas fa-check-circle"></i> Importados: ${shortcuts.length} accesos`;
+                    }
+                    
+                    persistShortcuts();
+                    renderShortcuts();
+                    
+                } catch (error) {
+                    console.error("Error al importar JSON:", error);
+                    showToast("❌ Error al leer el archivo JSON. Formato inválido.", 3000);
+                    if (importStatus) importStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error en la importación`;
+                }
+            };
+            reader.onerror = function() {
+                showToast("❌ Error al leer el archivo", 2000);
+            };
+            reader.readAsText(file);
+        }
+        
+        // Función para validar y cargar imágenes de fondo (sin CORS)
         function isValidImageUrl(url) {
-            // Verificar que sea una URL válida
             try {
                 const urlObj = new URL(url);
-                // Permitir http, https, data URLs
                 if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:' || urlObj.protocol === 'data:') {
                     return true;
                 }
@@ -48,10 +169,8 @@
             }
         }
 
-        // Función principal para configurar fondo sin problemas de CORS
         function setBackgroundImage(imageUrl) {
             if (!imageUrl) {
-                // Restablecer fondo por defecto
                 document.body.style.backgroundImage = "none";
                 document.body.style.backgroundColor = "#1e1f2c";
                 document.body.classList.remove('has-bg');
@@ -61,17 +180,12 @@
                 return;
             }
             
-            // Validar URL
             if (!isValidImageUrl(imageUrl)) {
                 showToast("❌ URL inválida. Usa http:// o https://", 2500);
                 return;
             }
             
-            // Crear un objeto Image para probar la carga (sin preocuparse por CORS)
-            // Las imágenes de Pinterest pueden tener CORS pero se muestran igual como background-image
             const img = new Image();
-            
-            // Timeout para no esperar demasiado
             const timeoutId = setTimeout(() => {
                 showToast("⚠️ La imagen tarda en cargarse, aplicando de todas formas...", 2500);
                 applyBackground(imageUrl);
@@ -86,8 +200,6 @@
             
             img.onerror = function() {
                 clearTimeout(timeoutId);
-                // Incluso si hay error CORS, intentamos aplicarlo (puede funcionar como background)
-                console.warn("Posible error CORS o imagen no encontrada, intentando aplicar de todas formas");
                 applyBackground(imageUrl);
                 showToast("⚠️ Fondo aplicado (verifica visibilidad)", 2000);
                 if (bgPreviewStatus) bgPreviewStatus.innerHTML = "⚠️ Imagen aplicada - puede tener restricciones CORS";
@@ -97,7 +209,6 @@
         }
         
         function applyBackground(imageUrl) {
-            // Aplicar como background-image
             document.body.style.backgroundImage = `url("${imageUrl.replace(/"/g, '&quot;')}")`;
             document.body.style.backgroundSize = "cover";
             document.body.style.backgroundPosition = "center center";
@@ -105,11 +216,7 @@
             document.body.style.backgroundAttachment = "fixed";
             document.body.style.backgroundColor = "transparent";
             document.body.classList.add('has-bg');
-            
-            // Guardar en localStorage
             localStorage.setItem(BG_KEY, imageUrl);
-            
-            // Actualizar input si es diferente
             if (bgUrlInput && bgUrlInput.value !== imageUrl) {
                 bgUrlInput.value = imageUrl;
             }
@@ -539,6 +646,30 @@
             }
         });
         
+        // Eventos para import/export
+        exportJsonBtn.addEventListener("click", exportToJSON);
+        
+        importJsonFile.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                importFromJSON(file, false);
+                importJsonFile.value = ""; // Reset para permitir importar el mismo archivo nuevamente
+            }
+        });
+        
+        mergeJsonBtn.addEventListener("click", () => {
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.accept = ".json";
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    importFromJSON(file, true);
+                }
+            };
+            fileInput.click();
+        });
+        
         addBtn.addEventListener("click", addNewShortcut);
         newUrl.addEventListener("keypress", (e) => { if (e.key === "Enter") addNewShortcut(); });
         newTitle.addEventListener("keypress", (e) => { if (e.key === "Enter") addNewShortcut(); });
@@ -551,6 +682,5 @@
         
         window.addEventListener("dragstart", (e) => { if (!e.target.closest(".shortcut-card")) e.preventDefault(); });
         
-        // Instrucciones para Pinterest en consola
-        console.log("📌 Para usar imágenes de Pinterest: Abre la imagen → Clic derecho → 'Abrir imagen en nueva pestaña' → Copia esa URL");
+        console.log("📌 Funcionalidades disponibles: Exportar/Importar JSON, favicons reales, fondo personalizado, arrastre");
     })();
